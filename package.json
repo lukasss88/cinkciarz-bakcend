@@ -1,15 +1,17 @@
 {
   "name": "cinkciarz-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "hello",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukasss88/cinkciarz-backend.git"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "hapi": "16.1.0",
-    "i": "0.3.5"
+  "homepage": "https://github.com/lukasss88/trener-cinkciarza-angularjs#readme",
+  "devDependencies": {
+    "hapi": "16.1.0"
   }
+
 }
