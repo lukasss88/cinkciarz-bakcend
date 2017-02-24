@@ -2,52 +2,42 @@
 
 var _ = require('lodash');
 
-var wallets = {PLN: 0, EUR: 0, USD: 0, GBP: 0, CHF: 0};
+var wallet = {PLN: 0, EUR: 0, USD: 0, GBP: 0, CHF: 0};
 
 function getWallet()
 {
-    return wallets;
+    return wallet;
 }
 
 function startValue(value)
 {
-    wallets.PLN = value
+    wallet.PLN = value
 }
 
-function addValue(param, value)
+function updateWallet(param, value)
 {
     var obj, currency;
     obj = _.omit(value, 'PLN');
     currency = _.keys(obj)[0];
 
-    if(param === 'buy'){
-        wallets.PLN -= value.PLN;
-        wallets[currency] += obj[currency];
-        console.log("buy");
-        console.log("wallets:", wallets);
-        console.log("wallets[currency]:", wallets[currency]);
-        console.log("obj:", obj);
-        console.log("obj[currency]:", obj[currency]);
-        console.log("currency:", currency);
-    }
-    else if(param === 'sell') {
-        wallets.PLN += value.PLN;
-        wallets[currency] -= obj[currency];
-        console.log("sell");
-        console.log("wallets:", wallets);
-        console.log("wallets[currency]:", wallets[currency]);
-        console.log("obj:", obj);
-        console.log("obj[currency]:", obj[currency]);
-        console.log("currency:", currency);
+    if (param === 'buy') {
+        wallet.PLN -= value.PLN;
+        wallet[currency] += obj[currency];
+    } else if (param === 'sell') {
+        wallet.PLN += value.PLN;
+        wallet[currency] -= obj[currency];
     }
 }
 
-function resetWallet(){
-    wallets = {PLN: 0, EUR: 0, USD: 0, GBP: 0, CHF: 0};
+function resetWallet()
+{
+    _.forEach(wallet, function (value, key)
+    {
+        wallet[key] = 0;
+    });
 }
-
 
 module.exports = {
-    getWallet: getWallet, startValue: startValue, addValue: addValue, resetWallet: resetWallet
+    getWallet: getWallet, startValue: startValue, updateWallet: updateWallet, resetWallet: resetWallet
 };
 

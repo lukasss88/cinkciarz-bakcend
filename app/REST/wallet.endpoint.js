@@ -1,5 +1,4 @@
 'use strict';
-var _ = require('lodash');
 var walletManager = require('../business/wallet.manager');
 
 module.exports = function (server)
@@ -29,19 +28,7 @@ module.exports = function (server)
     server.route({
         method: 'PUT', path: '/api/wallet/{type}', handler: function (request, reply)
         {
-            var wallet = request.payload;
-            var obj, currency;
-
-            if (request.params.type === 'buy') {
-                // wallets.PLN -= wallet.PLN;
-                // obj = _.omit(wallet, 'PLN');
-                // currency = _.keys(obj)[0];
-                // wallets[currency] += obj[currency];
-                walletManager.addValue('buy', request.payload);
-            }
-            else if(request.params.type === 'sell'){
-                walletManager.addValue('sell', request.payload);
-            }
+            walletManager.updateWallet(request.params.type, request.payload);
 
             reply({
                 result: walletManager.getWallet()

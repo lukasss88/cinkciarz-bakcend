@@ -10,9 +10,9 @@ function getWallet()
     return walletDAO.getWallet();
 }
 
-function addValue(param, value)
+function updateWallet(param, value)
 {
-    walletDAO.addValue(param, value)
+    walletDAO.updateWallet(param, value)
 }
 
 function resetWallet()
@@ -20,7 +20,6 @@ function resetWallet()
     walletDAO.resetWallet();
 }
 
-
 module.exports = {
-    startValue: startValue, getWallet: getWallet, addValue: addValue, resetWallet: resetWallet
+    startValue: startValue, getWallet: getWallet, updateWallet: updateWallet, resetWallet: resetWallet
 };
