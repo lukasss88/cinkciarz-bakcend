@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "homepage": "https://github.com/lukasss88/trener-cinkciarza-angularjs#readme",
-  "devDependencies": {
+  "dependencies": {
+    "lodash": "4.17.4",
     "hapi": "16.1.0"
   }
-
 }
