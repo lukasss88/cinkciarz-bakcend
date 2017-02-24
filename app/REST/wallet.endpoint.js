@@ -1,5 +1,6 @@
 'use strict';
 var walletManager = require('../business/wallet.manager');
+var joiSchema = require('../joi.schema.js');
 
 module.exports = function (server)
 {
@@ -26,7 +27,7 @@ module.exports = function (server)
     });
 
     server.route({
-        method: 'PUT', path: '/api/wallet/{type}', handler: function (request, reply)
+        method: 'PUT', path: '/api/wallet/{type}', config: { validate: {params: joiSchema.schema}}, handler: function (request, reply)
         {
             walletManager.updateWallet(request.params.type, request.payload);
 
