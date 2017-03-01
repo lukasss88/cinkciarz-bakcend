@@ -11,8 +11,18 @@
   "license": "ISC",
   "homepage": "https://github.com/lukasss88/trener-cinkciarza-angularjs#readme",
   "dependencies": {
+    "bcrypt-as-promised": "1.1.0",
+    "bluebird": "2.9.33",
     "hapi": "16.1.0",
     "joi": "10.2.2",
-    "lodash": "4.17.4"
+    "lodash": "4.17.4",
+    "jwt-simple": "0.5.1",
+    "moment": "2.17.1",
+    "pg": "4.4.0",
+    "pg-native": "1.10.0"
+  },
+  "scripts": {
+    "start": "node app/index.js",
+    "seed": "node seed/seed.js"
   }
 }

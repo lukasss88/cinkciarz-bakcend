@@ -2,7 +2,7 @@ var walletDAO = require('../dao/wallet.dao');
 
 function startValue(value)
 {
-    walletDAO.startValue(value)
+    return walletDAO.startValue(value)
 }
 
 function getWallet()
