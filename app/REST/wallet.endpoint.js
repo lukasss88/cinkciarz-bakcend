@@ -36,9 +36,7 @@ module.exports = function (server)
         {
             walletManager.updateWallet(request.params.type, request.payload);
 
-            reply({
-                result: walletManager.getWallet()
-            });
+            reply();
         }
     });
     server.route({

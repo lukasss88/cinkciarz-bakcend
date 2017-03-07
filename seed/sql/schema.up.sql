@@ -8,8 +8,11 @@ CREATE SEQUENCE wallet_id_seq
 
 CREATE TABLE wallet (
   id BIGINT DEFAULT nextval('wallet_id_seq'::regclass) NOT NULL PRIMARY KEY,
-  currency_name VARCHAR(60) NOT NULL,
-  currency_value FLOAT
+  PLN FLOAT,
+  USD FLOAT,
+  EUR FLOAT,
+  GBP FLOAT,
+  CHF FLOAT
 );
 
 -- PRIMARY KEYS
