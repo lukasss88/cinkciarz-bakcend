@@ -7,15 +7,9 @@ module.exports = function (server)
     server.route({
         method: 'GET', path: '/api/wallet', handler: function (request, reply)
         {
-            // var wallets = walletManager.getWallet();
-            // reply({
-            //     result: wallets
-            // });
-
             var wallet = walletManager.getWallet();
 
             reply(wallet)
-
 
         }
     });
@@ -23,11 +17,9 @@ module.exports = function (server)
     server.route({
         method: 'POST', path: '/api/wallet', handler: function (request, reply)
         {
-
             walletManager.startValue(request.payload.PLN).then(function(){
                 reply( );
             });
-
         }
     });
 
@@ -42,12 +34,13 @@ module.exports = function (server)
     server.route({
         method: 'DELETE', path: '/api/wallet', handler: function (request, reply)
         {
-
-            walletManager.resetWallet();
-
-            reply({
-                result: walletManager.getWallet()
+            walletManager.resetWallet().then(function(){
+                walletManager.getWallet().then(function (result)
+                {
+                    reply(result)
+                })
             });
+
         }
     });
 };

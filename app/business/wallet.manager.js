@@ -1,5 +1,6 @@
 var walletDAO = require('../dao/wallet.dao');
 var _ = require('lodash');
+
 function startValue(value)
 {
     return walletDAO.startValue(value)
@@ -10,27 +11,40 @@ function getWallet()
     return walletDAO.getWallet();
 }
 
-function updateWallet(param, wallet)
+function updateWallet(param, currencyToExchange)
 {
     var currencyForeign;
     var currencyForeignName;
     var currencyForeignValue;
-
-    currencyForeign = _.omit(wallet, 'PLN');
+    var plnValue;
+    currencyForeign = _.omit(currencyToExchange, 'PLN');
     currencyForeignName = _.keys(currencyForeign)[0];
-
-    walletDAO.getCurrency(currencyForeignName).then(function(result){
-        console.log(result);
-        currencyForeignValue = result[currencyForeignName] + currencyForeign[currencyForeignName]
-    });
-    // currencyForeignValue =
-    walletDAO.updateWallet(param, wallet, currencyForeignName, currencyForeignValue)
-
+    if (param === 'buy') {
+        return walletDAO.getCurrency(currencyForeignName).then(function (result)
+        {
+            currencyForeignValue = result[currencyForeignName] + currencyForeign[currencyForeignName];
+            return walletDAO.getCurrency('PLN');
+        }).then(function (result)
+        {
+            plnValue = result.PLN - currencyToExchange.PLN;
+            return walletDAO.updateWallet(currencyForeignName, currencyForeignValue, plnValue);
+        });
+    } else if (param === 'sell') {
+        walletDAO.getCurrency(currencyForeignName).then(function (result)
+        {
+            currencyForeignValue = result[currencyForeignName] - currencyForeign[currencyForeignName];
+            walletDAO.getCurrency('PLN').then(function (result)
+            {
+                plnValue = result.PLN + currencyToExchange.PLN;
+                walletDAO.updateWallet(currencyForeignName, currencyForeignValue, plnValue);
+            });
+        });
+    }
 }
 
 function resetWallet()
 {
-    walletDAO.resetWallet();
+    return walletDAO.resetWallet();
 }
 
 module.exports = {

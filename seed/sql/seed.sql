@@ -1,4 +1,4 @@
 INSERT INTO
   wallet
-(PLN) VALUES (12000)
+("PLN") VALUES (12000)
 
