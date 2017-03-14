@@ -8,17 +8,15 @@ module.exports = function (server)
         method: 'GET', path: '/api/wallet', handler: function (request, reply)
         {
             var wallet = walletManager.getWallet();
-
             reply(wallet)
-
         }
     });
-
     server.route({
         method: 'POST', path: '/api/wallet', handler: function (request, reply)
         {
-            walletManager.startValue(request.payload.PLN).then(function(){
-                reply( );
+            walletManager.startValue(request.payload.PLN).then(function ()
+            {
+                reply();
             });
         }
     });
@@ -26,21 +24,20 @@ module.exports = function (server)
     server.route({
         method: 'PUT', path: '/api/wallet/{type}', config: {validate: {params: joiSchema.schema}}, handler: function (request, reply)
         {
-            walletManager.updateWallet(request.params.type, request.payload);
-
-            reply();
+            walletManager.updateWallet(request.params.type, request.payload).then(function ()
+            {
+                reply();
+            });
         }
     });
+
     server.route({
         method: 'DELETE', path: '/api/wallet', handler: function (request, reply)
         {
-            walletManager.resetWallet().then(function(){
-                walletManager.getWallet().then(function (result)
-                {
-                    reply(result)
-                })
+            walletManager.resetWallet().then(function ()
+            {
+                reply(walletManager.getWallet())
             });
-
         }
     });
 };

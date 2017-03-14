@@ -30,14 +30,14 @@ function updateWallet(param, currencyToExchange)
             return walletDAO.updateWallet(currencyForeignName, currencyForeignValue, plnValue);
         });
     } else if (param === 'sell') {
-        walletDAO.getCurrency(currencyForeignName).then(function (result)
+        return walletDAO.getCurrency(currencyForeignName).then(function (result)
         {
             currencyForeignValue = result[currencyForeignName] - currencyForeign[currencyForeignName];
-            walletDAO.getCurrency('PLN').then(function (result)
-            {
-                plnValue = result.PLN + currencyToExchange.PLN;
-                walletDAO.updateWallet(currencyForeignName, currencyForeignValue, plnValue);
-            });
+            return walletDAO.getCurrency('PLN');
+        }).then(function (result)
+        {
+            plnValue = result.PLN + currencyToExchange.PLN;
+            return walletDAO.updateWallet(currencyForeignName, currencyForeignValue, plnValue);
         });
     }
 }

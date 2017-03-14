@@ -25,7 +25,6 @@ function startValue(value)
         var query = 'UPDATE wallet SET "PLN" = ' + value + ' WHERE id = 1;';
         return client.query(query, []).then(function (result)
         {
-
             return promise.resolve(result.rows);
         }).finally(client.done);
     }).catch(function (err)
@@ -38,7 +37,6 @@ function getCurrency(currencyName)
 {
     return db.getClient().then(function (client)
     {
-        console.log(currencyName);
         var query = 'SELECT "' + currencyName + '" FROM wallet;';
         return client.query(query, []).then(function (result)
         {
@@ -55,8 +53,6 @@ function updateWallet(currencyForeignName, currencyForeignValue, plnValue)
     return db.getClient().then(function (client)
     {
         var query1 = 'UPDATE wallet SET "' + currencyForeignName + '" = ' + currencyForeignValue + ', "PLN" = ' + plnValue + ' WHERE id = 1;';
-        //TODO
-        // var query1 = 'UPDATE wallet SET "$1" = $2, "PLN" = $3 WHERE id = 1;';
         return client.query(query1, []).then(function (result)
         {
             return result.rows;
@@ -65,16 +61,13 @@ function updateWallet(currencyForeignName, currencyForeignValue, plnValue)
     {
         throw err;
     });
-
 }
 
 function resetWallet()
 {
-    var wallet = {PLN: 0, EUR: 0, USD: 0, GBP: 0, CHF: 0};
     return db.getClient().then(function (client)
     {
         var query = 'UPDATE wallet SET "USD" = 0, "PLN" = 0, "EUR" = 0, "GBP" = 0, "CHF" = 0 WHERE id = 1;';
-
         return client.query(query, []).then(function (result)
         {
             return result.rows;
