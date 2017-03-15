@@ -52,8 +52,8 @@ function updateWallet(currencyForeignName, currencyForeignValue, plnValue)
 {
     return db.getClient().then(function (client)
     {
-        var query1 = 'UPDATE wallet SET "' + currencyForeignName + '" = ' + currencyForeignValue + ', "PLN" = ' + plnValue + ' WHERE id = 1;';
-        return client.query(query1, []).then(function (result)
+        var query = 'UPDATE wallet SET "' + currencyForeignName + '" = ' + currencyForeignValue + ', "PLN" = ' + plnValue + ' WHERE id = 1;';
+        return client.query(query, []).then(function (result)
         {
             return result.rows;
         }).finally(client.done);
