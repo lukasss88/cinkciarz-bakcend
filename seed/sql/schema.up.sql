@@ -1,0 +1,23 @@
+CREATE SEQUENCE wallet_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+CREATE TABLE wallet (
+  id BIGINT DEFAULT nextval('wallet_id_seq'::regclass) NOT NULL PRIMARY KEY,
+  "PLN" FLOAT,
+  "USD" FLOAT,
+  "EUR" FLOAT,
+  "GBP" FLOAT,
+  "CHF" FLOAT
+);
+
+-- PRIMARY KEYS
+
+
+-- FOREIGN KEYS
+
+

@@ -1,8 +1,9 @@
 var walletDAO = require('../dao/wallet.dao');
+var _ = require('lodash');
 
 function startValue(value)
 {
-    walletDAO.startValue(value)
+    return walletDAO.startValue(value)
 }
 
 function getWallet()
@@ -10,14 +11,40 @@ function getWallet()
     return walletDAO.getWallet();
 }
 
-function updateWallet(param, value)
+function updateWallet(param, currencyToExchange)
 {
-    walletDAO.updateWallet(param, value)
+    var currencyForeign;
+    var currencyForeignName;
+    var currencyForeignValue;
+    var plnValue;
+    currencyForeign = _.omit(currencyToExchange, 'PLN');
+    currencyForeignName = _.keys(currencyForeign)[0];
+    if (param === 'buy') {
+        return walletDAO.getCurrency(currencyForeignName).then(function (result)
+        {
+            currencyForeignValue = result[currencyForeignName] + currencyForeign[currencyForeignName];
+            return walletDAO.getCurrency('PLN');
+        }).then(function (result)
+        {
+            plnValue = result.PLN - currencyToExchange.PLN;
+            return walletDAO.updateWallet(currencyForeignName, currencyForeignValue, plnValue);
+        });
+    } else if (param === 'sell') {
+        return walletDAO.getCurrency(currencyForeignName).then(function (result)
+        {
+            currencyForeignValue = result[currencyForeignName] - currencyForeign[currencyForeignName];
+            return walletDAO.getCurrency('PLN');
+        }).then(function (result)
+        {
+            plnValue = result.PLN + currencyToExchange.PLN;
+            return walletDAO.updateWallet(currencyForeignName, currencyForeignValue, plnValue);
+        });
+    }
 }
 
 function resetWallet()
 {
-    walletDAO.resetWallet();
+    return walletDAO.resetWallet();
 }
 
 module.exports = {

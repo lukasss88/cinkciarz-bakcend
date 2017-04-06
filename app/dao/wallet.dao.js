@@ -1,43 +1,83 @@
 'use strict';
 
-var _ = require('lodash');
-
-var wallet = {PLN: 0, EUR: 0, USD: 0, GBP: 0, CHF: 0};
+var db = require('../service/db');
+var promise = require('bluebird');
 
 function getWallet()
 {
-    return wallet;
+    return db.getClient().then(function (client)
+    {
+        var query = 'SELECT * FROM wallet ORDER BY id;';
+        return client.query(query, []).then(function (result)
+        {
+            return result.rows
+        }).finally(client.done)
+    }).catch(function (err)
+    {
+        throw err;
+    })
 }
 
 function startValue(value)
 {
-    wallet.PLN = value
+    return db.getClient().then(function (client)
+    {
+        var query = 'UPDATE wallet SET "PLN" = ' + value + ' WHERE id = 1;';
+        return client.query(query, []).then(function (result)
+        {
+            return promise.resolve(result.rows);
+        }).finally(client.done);
+    }).catch(function (err)
+    {
+        throw err;
+    })
 }
 
-function updateWallet(param, value)
+function getCurrency(currencyName)
 {
-    var obj, currency;
-    obj = _.omit(value, 'PLN');
-    currency = _.keys(obj)[0];
+    return db.getClient().then(function (client)
+    {
+        var query = 'SELECT "' + currencyName + '" FROM wallet;';
+        return client.query(query, []).then(function (result)
+        {
+            return promise.resolve(result.rows[0]);
+        }).finally(client.done);
+    }).catch(function (err)
+    {
+        throw err;
+    })
+}
 
-    if (param === 'buy') {
-        wallet.PLN -= value.PLN;
-        wallet[currency] += obj[currency];
-    } else if (param === 'sell') {
-        wallet.PLN += value.PLN;
-        wallet[currency] -= obj[currency];
-    }
+function updateWallet(currencyForeignName, currencyForeignValue, plnValue)
+{
+    return db.getClient().then(function (client)
+    {
+        var query = 'UPDATE wallet SET "' + currencyForeignName + '" = ' + currencyForeignValue + ', "PLN" = ' + plnValue + ' WHERE id = 1;';
+        return client.query(query, []).then(function (result)
+        {
+            return result.rows;
+        }).finally(client.done);
+    }).catch(function (err)
+    {
+        throw err;
+    });
 }
 
 function resetWallet()
 {
-    _.forEach(wallet, function (value, key)
+    return db.getClient().then(function (client)
     {
-        wallet[key] = 0;
+        var query = 'UPDATE wallet SET "USD" = 0, "PLN" = 0, "EUR" = 0, "GBP" = 0, "CHF" = 0 WHERE id = 1;';
+        return client.query(query, []).then(function (result)
+        {
+            return result.rows;
+        }).finally(client.done);
+    }).catch(function (err)
+    {
+        throw err;
     });
 }
 
 module.exports = {
-    getWallet: getWallet, startValue: startValue, updateWallet: updateWallet, resetWallet: resetWallet
+    getWallet: getWallet, startValue: startValue, updateWallet: updateWallet, resetWallet: resetWallet, getCurrency: getCurrency
 };
-
